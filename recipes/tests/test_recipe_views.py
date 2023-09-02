@@ -1,7 +1,7 @@
 from django.urls import resolve, reverse
 from recipes import views
 
-from .test_recipe_base import RecipeTestBase
+from .test_recipe_base import Recipe, RecipeTestBase
 
 
 class RecipeViewsTest(RecipeTestBase):
@@ -28,11 +28,14 @@ class RecipeViewsTest(RecipeTestBase):
         )
 
     def test_recipe_home_template_loads_recipes(self):
+        # Need a recipe for this test
+        self.make_recipe()
 
         response = self.client.get(reverse('recipes:home'))
         content = response.content.decode('utf-8')
         response_context_recipes = response.context['recipes']
 
+        # Check if one recipe exists
         self.assertIn('Recipe Title', content)
         self.assertIn('10 Minutos', content)
         self.assertIn('5 Porções', content)
